@@ -360,15 +360,14 @@ class DefaultAnimationPreprocessor: BasePreprocessor {
       context[toView]!.append(contentsOf: [.scale(0.7),
                                            .overlay(color: .black, opacity: 0.1)])
     case .fade:
-      // TODO: clean up this. overFullScreen logic shouldn't be here
-      if !(fromOverFullScreen && !presenting) {
+      if presenting {
         context[toView] = [.fade]
       }
 
       #if os(tvOS)
         context[fromView] = [.fade]
       #else
-        if (!presenting && toOverFullScreen) || !fromView.isOpaque || (fromView.backgroundColor?.alphaComponent ?? 1) < 1 {
+        if !presenting || !fromView.isOpaque || (fromView.backgroundColor?.alphaComponent ?? 1) < 1 {
           context[fromView] = [.fade]
         }
       #endif
